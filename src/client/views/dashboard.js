@@ -21,16 +21,15 @@ const Dashboard = () => {
     ]
 
     React.useEffect(() =>{
-        if (!dashDetail || dashDetail === undefined){
+        console.log(dashDetail)
+        if (!dashDetail || dashDetail === undefined || dashDetail.length < 1){
             dispatch(fetchDashboardDetails())
         }
         
     },[])
 
     React.useEffect(() =>{
-        // if(dashDetail){
          setDashboard(dashDetail)        
-        // }
     },[dashDetail])
 
     const openChapter = (id,name,chapter) =>{

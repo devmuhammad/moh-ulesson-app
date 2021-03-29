@@ -4,9 +4,7 @@ import {
 
 
     const initialState = {
-        orig_details: [],
-        dash_details: [],
-        
+        orig_details: [],        
     };
     
     function getRandomColor(currCol) {
@@ -22,15 +20,14 @@ import {
                 return {... state, 
                     orig_details: action.payload}
             case FETCH_DASH_DETAILS:
-               const details = state.orig_details.map(el => {
+               state.orig_details.map(el => {
                     const elName = el.name === 'Mathematics' ? 'maths' : el.name.charAt(0).toLowerCase()+el.name.substr(1)
                     el.color = elName
                     el.icon ="images/"+elName+".svg"
                     el.circle = getRandomColor(elName)
                  })
                  
-                return { ...state,
-                    dash_details: details };
+                return; 
                 
             default:
                 return state;
