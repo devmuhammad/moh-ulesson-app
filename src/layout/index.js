@@ -8,7 +8,7 @@ import {MdAccountCircle} from 'react-icons/md'
 import LoadingBar from 'react-redux-loading-bar';
 import Logo from '../../public/svg-disp'
 import { useHistory } from 'react-router';
-// import {BsBell} from 'react-icons/bs'
+import {HiOutlineMenuAlt3} from 'react-icons/hi'
 
 
 const Navbar = styled.div`
@@ -24,6 +24,7 @@ const Layout = ({screens, children}) => {
         email: "mohola@gmail.com"
     })
     const [openPanel, setPanel] = React.useState(false)
+    const [showMenu, setMenu] = React.useState(false)
 
 
 return (
@@ -79,19 +80,16 @@ return (
           {/* <!-- Mobile menu button --> */}
           <button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 ">
             <span className="sr-only">Open main menu</span>
-           
+            <HiOutlineMenuAlt3 className="text-2xl text-white " onClick={()=> setMenu(!showMenu)}/>
+            
           </button>
         </div>
       </div>
     </Navbar>
 
 
-    {/* <!--
-      Mobile menu, toggle classes based on menu state.
-
-      Open: "block", closed: "hidden"
-    --> */}
-    <div className="hidden md:hidden">
+    
+    {showMenu && <div className="md:hidden">
       {/* <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
         <a href="#" className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
@@ -106,7 +104,7 @@ return (
               <MdAccountCircle className="text-xl text-white"/>
           </div>
           <div className="ml-3">
-            <div className="text-base font-medium leading-none text-white">Devmuhammadk</div>
+            <div className="text-base font-medium leading-none text-white">Devmuhammad</div>
             <div className="text-sm font-medium leading-none text-gray-400">devmoh@ulesson.com</div>
           </div>
           
@@ -119,16 +117,10 @@ return (
           <a href="#" className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Sign out</a>
         </div>
       </div>
-    </div>
+    </div>}
   </nav>
   <LoadingBar style={{backgroundColor:"#EA7052"}} />
-  {/* <header className="bg-custGrey shadow">
-    <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold leading-tight text-gray-900">
-        {getRouteName()}
-      </h1>
-    </div>
-  </header> */}
+ 
   <main className="w-full bg-transparent h-full main">
     <div className="max-w-7xl mx-auto pb-6 sm:px-6 lg:px-12 md:pt-12 sm:pt-4">
       {screens}

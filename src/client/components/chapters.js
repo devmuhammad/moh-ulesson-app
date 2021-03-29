@@ -39,7 +39,7 @@ const Chapters = () => {
     return (
 
       <div className="block overflow-hidden">
-            <span className=" flex flex-row items-center font-bold text-2xl md:text-4xl text-gray-800 pb-10 p-3 md:p-0">
+            <span className=" flex flex-row items-center font-bold text-2xl md:text-4xl text-gray-800 :mb-2 md:mb-10 p-3 md:p-0">
               <HiOutlineArrowNarrowLeft className="cursor-pointer text-3xl middle" onClick={() => history.goBack()} /> 
               &nbsp;&nbsp; {subjectName}
             </span>

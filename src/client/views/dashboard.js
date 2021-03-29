@@ -21,7 +21,6 @@ const Dashboard = () => {
     ]
 
     React.useEffect(() =>{
-        console.log(dashDetail)
         if (!dashDetail || dashDetail === undefined || dashDetail.length < 1){
             dispatch(fetchDashboardDetails())
         }

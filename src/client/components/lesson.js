@@ -15,7 +15,7 @@ const Lesson = () => {
             <HiOutlineArrowNarrowLeft className="cursor-pointer text-3xl " onClick={() => history.goBack()} />
             <div className="flex flex-col items-center justify-center"> 
                 <video 
-                className="w-2/4"
+                className="w-4/5 md:w-2/4"
                 controls 
                 autoPlay={false}
                 src={lessonDet.media_url} />
