@@ -1,8 +1,12 @@
 const colors = require('tailwindcss/colors')
-const plugin = require('tailwindcss/plugin');
 
 module.exports = {
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  purge:[
+      './pages/**/*.{js,ts,jsx,tsx}', 
+      './components/**/*.{js,ts,jsx,tsx}',
+      './src/**/*.{js,ts,jsx,tsx}',
+      './public/**/*.{js,ts,jsx,tsx}'
+    ],
   darkMode: "class", // or 'media' or 'class'
   theme: {
     extend: {
@@ -42,15 +46,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [
-    plugin(function ({ addUtilities }) {
-      addUtilities({
-        '.bg-overlay': {
-          'background': 'linear-gradient(var(--overlay-angle, 0deg), var(--overlay-colors)), var(--overlay-image)',
-          'background-position': 'center',
-          'background-size': 'cover',
-        },
-      });
-    }),
-  ],
+  plugins: [],
 }
