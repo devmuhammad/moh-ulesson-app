@@ -49,7 +49,7 @@ api.interceptors.response.use(
     // }
 
     if (err.response.status === 500) {
-      import('../store').then((module) => {
+      import('../redux/store').then((module) => {
         const store = module.default;
         store.dispatch(logout());
       });

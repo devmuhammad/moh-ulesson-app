@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const plugin = require('tailwindcss/plugin');
 
 module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
@@ -20,11 +21,36 @@ module.exports = {
         },
         custGrey:{
           DEFAULT: "#EDEDEE"
+        },
+        maths: {
+          DEFAULT: "#EA7052"
+        },
+        physics: {
+          DEFAULT: "#898DDC"
+        },
+        chemistry: {
+          DEFAULT: "#FCA964"
+        },
+        biology: {
+          DEFAULT: "#68BC98"
+        },
+        english: {
+          DEFAULT: "#506AAC"
         }
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.bg-overlay': {
+          'background': 'linear-gradient(var(--overlay-angle, 0deg), var(--overlay-colors)), var(--overlay-image)',
+          'background-position': 'center',
+          'background-size': 'cover',
+        },
+      });
+    }),
+  ],
 }

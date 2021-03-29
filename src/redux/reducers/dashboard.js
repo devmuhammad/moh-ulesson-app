@@ -1,27 +1,37 @@
 import {
-    FETCH_REPORT_BY_USER,
+    FETCH_DASH_DETAILS,DASHBOARD_DETAILS
     } from "../actions/actionTypes";
 
 
     const initialState = {
-        reports: [],
+        orig_details: [],
+        dash_details: [],
         
     };
+    
+    function getRandomColor(currCol) {
+        const col = Math.floor(Math.random()* 3) + 1 
+        const remArr = ['chemistry','biology','maths','physics'].filter(el => el !== currCol)
+        return remArr[col-1]
+      }
+
 
     const dashboardReducer = (state = initialState, action) => {
         switch (action.type) {
-            case FETCH_REPORT_BY_USER:
-                if (state.products.findIndex(product => product.id === action.productId) !== -1) {
-                    const singleItem = state.products.reduce((itemAcc, product) => {
-                        return product
-                    }, [])
-                    return { ...state,
-                        product_details: singleItem };
-                }
-    
-            // case CHANGE_CURRENCY:
-            //     return { ...state,
-            //         symbol: action.symbol };
+            case DASHBOARD_DETAILS:
+                return {... state, 
+                    orig_details: action.payload}
+            case FETCH_DASH_DETAILS:
+               const details = state.orig_details.map(el => {
+                    const elName = el.name === 'Mathematics' ? 'maths' : el.name.charAt(0).toLowerCase()+el.name.substr(1)
+                    el.color = elName
+                    el.icon ="images/"+elName+".svg"
+                    el.circle = getRandomColor(elName)
+                 })
+                 
+                return { ...state,
+                    dash_details: details };
+                
             default:
                 return state;
         }

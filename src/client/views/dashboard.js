@@ -1,85 +1,63 @@
 import React from 'react';
-import xw, { cx } from 'xwind'
-import {fetchUserReport} from "../../redux/actions"
+import {fetchDashboardDetails} from "../../redux/actions"
 
-import {BsCheckAll} from 'react-icons/bs'
-import {BiTimeFive} from 'react-icons/bi'
-import {IoMdCash} from 'react-icons/io'
-import DashTable from '../components/dashtable'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import {MATHS,CHEMISTRY,PHYSICS,BIOLOGY} from '../../constants/urls'
+import { useHistory } from 'react-router';
+// import { ReactSVG } from 'react-svg'
+import { IoPlay } from 'react-icons/io5'
 
 const Dashboard = () => {
+    const dashDetail = useSelector(state => state.dashboard.orig_details, shallowEqual)
+    const [dashboardItems, setDashboard] = React.useState(dashDetail || [])
+    const [username] = React.useState('Devmuhammad')
+    const dispatch = useDispatch()
+    const history = useHistory()
+    const topics = [
+        {id:1, color:'maths', subject:'Mathematics',img:MATHS, title:'Understanding Motion' },
+        {id:2, color:'physics', subject:'Physics',img:PHYSICS, title:'Light' },
+        {id:3, color:'chemistry', subject:'Chemistry',img:CHEMISTRY, title:"Polution Of Water" },
+        {id:4, color:'biology', subject:'Biology',img:BIOLOGY, title:"Microorganism"},
+    ]
 
-    const [dashDetails, setDash] = React.useState({
-        delivered: 43,
-        pending: 72,
-        earning: 2250,
-        topCities:[
-            {city:"Casablanca", num:49},
-            {city:"Rabat", num:82},
-            {city:"Agadir", num:63},
-            {city:"Marrakech", num:43},
-            {city:"El Jadida", num:24},
-            {city:"Tamara", num:29},
-            {city:"Tetouan", num:36},
-            // {city:"Casablanca", num:59},
-            // {city:"Casablanca", num:71},
-        ],
-        topSelling: [
-            {  
-                img:'/../assets/bird.jpeg',
-                item:'Henna Wear',
-                itemno:1872,
-                delivered: 10,
-                pending: 32,
-                earning: 1050
-            },
-            {  
-                img:'/../assets/bird.jpeg',
-                item:'Henna Indigo',
-                itemno:1902,
-                delivered: 29,
-                pending: 37,
-                earning: 2900
-            },
-            {  
-                img:'/../assets/bird.jpeg',
-                item:'Henna White',
-                itemno:1848,
-                delivered: 29,
-                pending: 22,
-                earning: 1750
-            },
-            {  
-                img:'/../assets/bird.jpeg',
-                item:'Henna Red',
-                itemno:1772,
-                delivered: 7,
-                pending: 19,
-                earning: 350
-            },
-            {  
-                img:'/../assets/bird.jpeg',
-                item:'Henna Blue',
-                itemno:1038,
-                delivered: 91,
-                pending: 12,
-                earning: 4200
-            }
-        ]
-    })
+    React.useEffect(() =>{
+        if (dashDetail === undefined){
+            dispatch(fetchDashboardDetails())
+        }
+        
+    },[])
 
+    React.useEffect(() =>{
+        // if(dashDetail){
+         setDashboard(dashDetail)        
+        // }
+    },[dashDetail])
 
-    function showTopCities() {
+    const openChapter = (id,name,chapter) =>{
+        const chapterDet = {name, chapter}
+        history.push('chapter/'+id, {chapterDet})
+    }
+
+    function showAvailableVids() {
         return(
-            dashDetails.topCities.map((city) => {
-                return (
-                    <div key={city.num} css={xw`flex flex-row bg-white justify-between p-3 mx-6 md:mx-0 px-4 md:px-8`}>
-                        <span css={xw`text-lg font-medium text-gray-600`}>
-                            {city.city}
+            topics.map((topic) => {
+                return (<div className="block">
+                    <div key={topic.id} style={{backgroundImage:`url(${topic.img})`}} className={`flex bg-no-repeat bg-cover hover:shadow-lg cursor-pointer h-32 md:h-40 text-gray-800 rounded-3xl `}>
+                       <div className={`flex items-center justify-center bg-${topic.color} bg-opacity-20 h-full w-full px-4 md:mx-0 md:px-8 py-4 rounded-3xl`}>
+                            <div  className={`flex items-center justify-center relative rounded-full h-16 w-16 bg-white text-${topic.color} text-xl`}>
+                                <IoPlay /> 
+                            </div>
+
+                       </div>
+                    </div>
+                        <div className="flex flex-col p-3">
+                        <span className={`text-lg font-medium py-4 text-${topic.color}`}>
+                            {topic.subject}
                         </span>
-                        <span css={xw`text-lg font-bold text-green-600`}>
-                            {city.num}
+                        <span className={`text-xl font-semibold`}>
+                            {topic.title}
                         </span>
+                        </div>
                     </div>
                 )
             })
@@ -87,71 +65,49 @@ const Dashboard = () => {
     }
 
     return(
-        <div css={xw`block overflow-hidden`}>
-            <div css={xw`grid grid-cols-1 gap-2 md:grid-cols-3 md:gap-5 w-full`}>
+        <div className="block overflow-hidden">
+            <span className="font-bold text-3xl md:text-5xl text-gray-700 p-5 md:p-0 mt-2 md:mt-0">Hello {username},</span>
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-5 md:gap-3 w-full  pt-8 md:pt-12">
 
-                <div css={xw`flex items-center h-28 md:h-32 px-4 mx-4 md:mx-0 bg-white rounded-md md:px-8 justify-around`}>
-                    <span css={xw` bg-green-700 rounded-full items-center p-4`}>
-                        <BsCheckAll css={xw`text-4xl text-white`} />
-                        
+                {dashboardItems && dashboardItems.map((dash) => (<div key={dash.id} id="box" onClick={()=> openChapter(dash.id,dash.name,dash.chapters)}  className={`grid grid-cols-2 gap-4 hover:shadow-xl cursor-pointer py-4 h-28 md:h-32 px-4 mx-4 md:mx-0 bg-${dash.color} text-white text-xl rounded-2xl md:px-8`}>
+                    {/* <div style={{top : getRandomNumber(0, boxHt),left: getRandomNumber(0, boxWt)}} className={`absolute rounded-full h-16 w-16 bg-${dash.circle}`}> </div> */}
+                    <span className="place-self-start w-10 ">
+                        <img src={dash.icon} />
                     </span>
-                    <div css={xw`flex flex-col items-center`}>
-                            <span css={xw`text-lg font-medium text-gray-400`}>
-                                Delivered
-                            </span>
-                            <span css={xw`text-3xl font-bold text-gray-800`}>
-                                {dashDetails.delivered}
-                            </span>
-                    </div>
+                    <span className="place-self-end ">{dash.name.toUpperCase()}</span>
                 </div>
-                <div css={xw`flex items-center h-28 md:h-32 px-4 mx-4 md:mx-0 bg-white rounded-md md:px-8 justify-around`}>
-                    <span css={xw` bg-yellow-500 rounded-full items-center p-4`}>
-                            <BiTimeFive css={xw`text-4xl text-white`} />
-                    </span>
-                    <div css={xw`flex flex-col items-center`}>
-                            <span css={xw`text-lg font-medium text-gray-400`}>
-                                Pending
-                            </span>
-                            <span css={xw`text-3xl font-bold text-gray-800`}>
-                                {dashDetails.pending}
-                            </span>
-                    </div>
-                </div>
-                <div css={xw`flex items-center h-28 md:h-32 px-4 mx-4 md:mx-0 bg-white rounded-md md:px-8 justify-around`}>
-                    <span css={xw` bg-black rounded-full items-center p-4`}>
-                            <IoMdCash css={xw`text-4xl text-white`} />
-                    </span>
-                    <div css={xw`flex flex-col items-center`}>
-                            <span css={xw`text-lg font-medium text-gray-400`}>
-                                Earning
-                            </span>
-                            <span css={xw`text-3xl font-bold text-gray-800`}>
-                                {dashDetails.earning}<span css={xw`text-sm font-extrabold`}>MAD</span>
-                            </span>
-                    </div>
-                </div>
+                ))}
+             
             </div>
-            <div css={xw`grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4 w-full mt-6 h-auto`}>
+            <div className="block w-full mt-8 h-auto px-2 md:px-0">
 
-                <div css={xw`flex flex-col md:col-span-2 `}>
-                    <span css={xw`text-black text-2xl font-semibold p-3`}>
-                        Top 5 Selling Products
-                    </span>
-                    <div css={xw`bg-white w-full overflow-hidden`}> 
-                        <DashTable topSelling={dashDetails.topSelling} />
+                <div className="block  mb-4">
+                    <div className="flex justify-between items-center">
+                        <span className="text-black text-xl md:text-2xl font-semibold p-1 md:p-3">
+                            Recently watched topics
+                        </span>
+                        <span className="flex bg-maths p-1 px-3 text-md text-white rounded-lg cursor-pointer ">
+                            SEE ALL
+                        </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 w-full pt-8">
+                        {showAvailableVids()}
+                    </div>
+                </div>
+                <div className="block  ">
+                    <div className="flex justify-between items-center">
+                        <span className="text-black text-xl md:text-2xl font-semibold p-1 md:p-3">
+                            Recommended videos
+                        </span>
+                        <span className="flex bg-maths p-1 px-3 text-md text-white rounded-lg cursor-pointer ">
+                            SEE ALL
+                        </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 w-full pt-8">
+                        {showAvailableVids()}
                     </div>
                 </div>
 
-                <div css={xw`flex flex-col`}>
-                    <span css={xw`text-black text-2xl font-semibold p-3`}>
-                            Top Cities
-                    </span>
-                    <div css={xw`overflow-y-scroll h-96`}>
-                    <div css={xw`grid grid-flow-row auto-rows-max gap-3 md:auto-rows-min`}>
-                        { showTopCities()}
-                    </div>
-                    </div>
-                </div>
 
             </div>
             
